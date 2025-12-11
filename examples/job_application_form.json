@@ -1,0 +1,107 @@
+{
+  "form_id": "job_application",
+  "form_name": "Job Application Form",
+  "description": "Apply for a position at our company",
+  "fields": [
+    {
+      "id": "full_name",
+      "label": "Full Name",
+      "type": "text",
+      "required": true,
+      "voice_hints": "What's your full name?",
+      "validation": {
+        "min_length": 2,
+        "max_length": 100
+      }
+    },
+    {
+      "id": "email",
+      "label": "Email Address",
+      "type": "email",
+      "required": true,
+      "voice_hints": "What's your email address?"
+    },
+    {
+      "id": "phone",
+      "label": "Phone Number",
+      "type": "phone",
+      "required": true,
+      "voice_hints": "What's your contact phone number?"
+    },
+    {
+      "id": "position",
+      "label": "Position Applied For",
+      "type": "select",
+      "required": true,
+      "options": ["Software Engineer", "Data Scientist", "Product Manager", "Designer", "DevOps Engineer"],
+      "voice_hints": "Which position are you applying for?",
+      "voice_aliases": {
+        "Software Engineer": ["software engineer", "developer", "programmer", "swe"],
+        "Data Scientist": ["data scientist", "ml engineer", "machine learning"],
+        "Product Manager": ["product manager", "pm", "product"],
+        "Designer": ["designer", "ui designer", "ux designer", "ui/ux"],
+        "DevOps Engineer": ["devops", "devops engineer", "sre", "site reliability"]
+      }
+    },
+    {
+      "id": "experience_years",
+      "label": "Years of Experience",
+      "type": "number",
+      "required": true,
+      "voice_hints": "How many years of relevant experience do you have?",
+      "validation": {
+        "min_value": 0,
+        "max_value": 50
+      }
+    },
+    {
+      "id": "education",
+      "label": "Highest Education",
+      "type": "select",
+      "required": true,
+      "options": ["High School", "Bachelor's Degree", "Master's Degree", "PhD"],
+      "voice_hints": "What's your highest level of education?",
+      "voice_aliases": {
+        "High School": ["high school", "12th", "secondary"],
+        "Bachelor's Degree": ["bachelor", "bachelors", "undergraduate", "graduation", "btech", "be"],
+        "Master's Degree": ["master", "masters", "mtech", "msc", "postgraduate"],
+        "PhD": ["phd", "doctorate", "doctoral"]
+      }
+    },
+    {
+      "id": "current_location",
+      "label": "Current Location",
+      "type": "text",
+      "required": true,
+      "voice_hints": "Where are you currently located?"
+    },
+    {
+      "id": "notice_period",
+      "label": "Notice Period (Days)",
+      "type": "number",
+      "required": false,
+      "voice_hints": "What's your notice period in days, if applicable?",
+      "validation": {
+        "min_value": 0,
+        "max_value": 180
+      }
+    },
+    {
+      "id": "linkedin_url",
+      "label": "LinkedIn Profile URL",
+      "type": "url",
+      "required": false,
+      "voice_hints": "Do you have a LinkedIn profile URL?"
+    },
+    {
+      "id": "availability",
+      "label": "Available for Interview",
+      "type": "date",
+      "required": true,
+      "voice_hints": "When are you available for an interview?",
+      "validation": {
+        "future_only": true
+      }
+    }
+  ]
+}

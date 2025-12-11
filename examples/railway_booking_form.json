@@ -1,0 +1,102 @@
+{
+  "form_id": "railway_booking",
+  "form_name": "Railway Ticket Booking",
+  "description": "Book railway tickets for travel across India",
+  "fields": [
+    {
+      "id": "source",
+      "label": "Source City",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Delhi, Mumbai, Bangalore",
+      "voice_hints": "Which city are you departing from?",
+      "validation": {
+        "pattern": "^[A-Za-z ]+$",
+        "hints": ["Valid Indian city names"]
+      }
+    },
+    {
+      "id": "destination",
+      "label": "Destination City",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Delhi, Mumbai, Bangalore",
+      "voice_hints": "Where do you want to go?",
+      "validation": {
+        "pattern": "^[A-Za-z ]+$"
+      }
+    },
+    {
+      "id": "travel_date",
+      "label": "Travel Date",
+      "type": "date",
+      "required": true,
+      "voice_hints": "When do you want to travel? You can say a specific date or something like 'next Monday'",
+      "validation": {
+        "future_only": true,
+        "hints": ["Date must be in the future"]
+      }
+    },
+    {
+      "id": "passengers",
+      "label": "Number of Passengers",
+      "type": "number",
+      "required": true,
+      "default_value": 1,
+      "voice_hints": "How many passengers are traveling?",
+      "validation": {
+        "min_value": 1,
+        "max_value": 6
+      }
+    },
+    {
+      "id": "class",
+      "label": "Travel Class",
+      "type": "select",
+      "required": true,
+      "options": ["Sleeper", "AC 3-Tier", "AC 2-Tier", "AC 1st Class"],
+      "voice_hints": "Which class would you prefer? Options are Sleeper, AC 3-Tier, AC 2-Tier, or AC 1st Class",
+      "voice_aliases": {
+        "Sleeper": ["sleeper", "sl", "basic"],
+        "AC 3-Tier": ["ac 3 tier", "3 tier", "ac3", "three tier"],
+        "AC 2-Tier": ["ac 2 tier", "2 tier", "ac2", "two tier"],
+        "AC 1st Class": ["ac 1st class", "first class", "ac1", "premium"]
+      }
+    },
+    {
+      "id": "seat_preference",
+      "label": "Seat Preference",
+      "type": "select",
+      "required": false,
+      "options": ["Window", "Aisle", "Middle", "No Preference"],
+      "default_value": "No Preference",
+      "voice_hints": "Do you have a seat preference? Window, Aisle, Middle, or No Preference",
+      "voice_aliases": {
+        "Window": ["window", "by window", "side"],
+        "Aisle": ["aisle", "corridor"],
+        "Middle": ["middle", "center"],
+        "No Preference": ["no preference", "any", "doesn't matter", "don't care"]
+      }
+    },
+    {
+      "id": "email",
+      "label": "Email Address",
+      "type": "email",
+      "required": true,
+      "voice_hints": "What's your email address for ticket confirmation?",
+      "validation": {
+        "hints": ["Must be a valid email format"]
+      }
+    },
+    {
+      "id": "phone",
+      "label": "Phone Number",
+      "type": "phone",
+      "required": true,
+      "voice_hints": "What's your contact phone number?",
+      "validation": {
+        "hints": ["10-digit Indian mobile number"]
+      }
+    }
+  ]
+}
