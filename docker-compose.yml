@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Main application
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # LLM Configuration
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+
+      # Speech Configuration
+      - STT_PROVIDER=${STT_PROVIDER:-openai}
+      - TTS_PROVIDER=${TTS_PROVIDER:-openai}
+
+      # Redis Configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+      # API Configuration
+      - API_DEBUG=false
+      - LOG_LEVEL=INFO
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Redis for session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+    profiles:
+      - production
+
+volumes:
+  redis_data:

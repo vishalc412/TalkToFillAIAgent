@@ -1,0 +1,108 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-asyncio pytest-cov
+          pip install pydantic pydantic-settings fastapi httpx python-dotenv python-dateutil
+
+      - name: Run unit tests
+        run: |
+          pytest tests/test_models.py -v --cov=src --cov-report=xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install linting tools
+        run: |
+          pip install black flake8 mypy
+
+      - name: Check code formatting with Black
+        run: black --check src/ tests/ || true
+
+      - name: Lint with flake8
+        run: flake8 src/ tests/ --max-line-length=100 --extend-ignore=E203,W503 || true
+
+  docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: docker build -t voice-form-agent:test .
+
+      - name: Test Docker image
+        run: |
+          docker run -d --name test-container \
+            -e OPENAI_API_KEY=test-key \
+            -e LLM_PROVIDER=openai \
+            -p 8000:8000 \
+            voice-form-agent:test
+          sleep 10
+          curl -f http://localhost:8000/health || exit 1
+          docker stop test-container
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
