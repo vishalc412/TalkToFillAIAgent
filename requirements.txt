@@ -1,0 +1,43 @@
+# Core Dependencies
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-multipart==0.0.6
+
+# LangGraph and LangChain
+langgraph==0.2.28
+langchain==0.3.0
+langchain-core==0.3.0
+langchain-community==0.3.0
+
+# LLM Providers
+langchain-openai==0.2.0
+langchain-anthropic==0.2.0
+langchain-google-genai==2.0.0
+
+# Speech Processing
+openai-whisper==20231117
+SpeechRecognition==3.10.1
+pydub==0.25.1
+gtts==2.5.0
+openai==1.12.0
+
+# Utilities
+python-dotenv==1.0.0
+redis==5.0.1
+httpx==0.26.0
+jinja2==3.1.3
+
+# Data Validation
+jsonschema==4.21.0
+python-dateutil==2.8.2
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Optional: For enhanced speech processing
+pyaudio==0.2.14
