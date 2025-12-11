@@ -36,7 +36,8 @@ python-dateutil==2.8.2
 # Testing
 pytest==7.4.4
 pytest-asyncio==0.23.3
-httpx==0.26.0
+pytest-cov==4.1.0
+pytest-mock==3.12.0
 
 # Optional: For enhanced speech processing
 pyaudio==0.2.14
